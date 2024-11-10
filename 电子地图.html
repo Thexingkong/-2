@@ -1,0 +1,121 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+    <title>鼠标拾取地图坐标及显示行动轨迹</title>
+    <link rel="stylesheet" href="https://a.amap.com/jsapi_demos/static/demo-center/css/demo-center.css" />
+    <script type="text/javascript" src="https://cache.amap.com/lbs/static/addToolbar.js"></script>
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0px;
+        }
+       .map {
+            height: 100%;
+            width: 100%;
+            float: left;
+        }
+    </style>
+    <script type="text/javascript">
+        window._AMapSecurityConfig = {
+            securityJsCode: "5f2a3f4de95c70a031062804225cea36",
+        };
+    </script>
+    <script src="https://webapi.amap.com/maps?v=2.0&key=c2d41093d0de2ff063d9decdd5a4fe46"></script>
+    <script type="text/javascript">
+        window._AMapSecurityConfig = {
+            securityJsCode: "4b8aa1f96c8ccdeec94b201bcd82227f",
+        };
+    </script>
+    <script src="https://webapi.amap.com/maps?v=2.0&key=664b1caea51861913c34390bead7bd09"></script>
+</head>
+
+<body>
+    <div id="container" class="map"></div>
+    <div class="input-card">
+        <h4>左击获取经纬度：</h4>
+        <div class="input-item">
+            <input type="text" readonly="true" id="lnglat">
+        </div>
+    </div>
+
+    <script>
+        // 创建地图对象
+        const map = new AMap.Map('container', {
+            center: [102.06739381, 24.83947753],
+            zoom: 11,
+            viewMode: '3D',
+            pitch: 45,
+        });
+
+        // 为地图注册 click 事件获取鼠标点击出的经纬度坐标
+        map.on('click', function (e) {
+            document.getElementById("lnglat").value = e.lnglat.getLng() + ',' + e.lnglat.getLat();
+        });
+
+        // 定义轨迹点数组
+        const points = [
+            [102.756463, 25.059656],
+            [102.756819, 25.059729],
+            [102.756819, 25.059729],
+            [102.758248, 25.059772],
+            [102.758366, 25.059789],
+            [102.760235, 25.059754],
+            [102.760245, 25.060661],
+            [102.760359, 25.060743],
+            [102.760822, 25.060796],
+            [102.761682, 25.060937],
+            [102.761838, 25.060973],
+            [102.762114, 25.061064],
+            [102.762550, 25.061249],
+            [102.762557, 25.061259],
+            [102.762695, 25.061362],
+            [102.763096, 25.061854],
+            [102.763047, 25.062094],
+            [102.763492, 25.062357],
+            [102.763744, 25.062521],
+            [102.763926, 25.06271]
+        ];
+
+        // 创建轨迹线
+        const polyline = new AMap.Polyline({
+            path: points,
+            strokeColor: '#00A',
+            strokeWeight: 5,
+            strokeStyle: 'solid'
+        });
+
+        // 将轨迹线添加到地图上
+        map.add(polyline);
+
+        // 异步加载控件
+        AMap.plugin(['AMap.ToolBar', 'AMap.Scale', 'AMap.Geolocation', 'AMap.ControlBar', 'AMap.HawkEye'], function () {
+            var toolbar = new AMap.ToolBar({
+                position: { right: '15px', bottom: '100px' }
+            });
+            var Scale = new AMap.Scale({
+                position: { right: '15px', bottom: '200px' }
+            });
+            var HawkEye = new AMap.HawkEye({
+                position: { right: '15px', bottom: '300px' }
+            });
+            var Geolocation = new AMap.Geolocation({
+                position: { right: '15px', bottom: '400px' }
+            });
+            var ControlBar = new AMap.ControlBar({
+                position: { right: '15px', bottom: '500px' }
+            });
+            map.addControl(toolbar);
+            map.addControl(Scale);
+            map.addControl(Geolocation);
+            map.addControl(ControlBar);
+            map.addControl(HawkEye);
+        });
+    </script>
+</body>
+
+</html>
